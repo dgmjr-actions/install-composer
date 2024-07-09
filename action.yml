@@ -6,14 +6,19 @@ branding:
   icon: music
   color: blue
 
+name: Install Composer for PHP
+description: 'A composite action to install Composer'
+author: David G. Moore, Jr., <david@dgmjr.io>
+inputs:
+  version:
+    description: 'The version of Composer to install. By default, it installs the latest stable version.'
+    required: false
+    default: 'latest'
 runs:
-  using: composite
+  using: 'composite'
   steps:
     - name: Install Composer
-      id: install-composer
-      run: |
-          mkdir -p /tmp
-          cd ~
-          curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
-          HASH=`curl -sS https://composer.github.io/installer.sig`
-          sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+      run: ./.github/actions/install-composer/install-composer.sh
+      shell: bash
+      with:
+        version: ${{ inputs.version }}
